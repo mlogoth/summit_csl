@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<package>
+  <name>summit_csl</name>
+  <version>1.1.3</version>
+  <description>The summit_xl_sim and summit_xl_common metapackages modified by the Team of the Control System Lab, National Technical University of Athens</description>
+
+  <maintainer email="cvillar@robotnik.es">Carlos Villar</maintainer>
+  <maintainer email="rguzman@robotnik.es">Roberto Guzmán</maintainer>
+  <maintainer email="rnavarro@robotnik.es">Román Navarro</maintainer>
+  <maintainer email="logothm@gmail.com">Michalis Logothetis</maintainer>
+
+
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/summit_xl_sim</url>
+  <url type="repository">https://github.com/RobotnikAutomation/summit_xl_sim.git</url>
+  <url type="bugtracker">https://github.com/RobotnikAutomation/summit_xl_sim/issues</url>
+  
+  <url type="website">http://ros.org/wiki/summit_xl_common</url>
+  <url type="repository">https://github.com/RobotnikAutomation/summit_xl_common.git</url>
+  <url type="bugtracker">https://github.com/RobotnikAutomation/summit_xl_common/issues</url>
+
+  <url type="repository">https://github.com/mlogoth/summit_csl.git</url>
+
+
+  <author email="rguzman@robotnik.es">Roberto Guzmán</author>
+  <author email="rnavarro@robotnik.es">Román Navarro</author>
+  <author email="jarino@robotnik.es">Jorge Ariño</author>
+  <author email="logothm@gmail.com">Michalis Logothetis</author>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>summit_xl_description</run_depend>
+  <run_depend>summit_xl_localization</run_depend>
+  <run_depend>summit_xl_navigation</run_depend>
+  <run_depend>summit_xl_pad</run_depend>
+  <run_depend>summit_xl_control</run_depend>
+  <run_depend>summit_xl_gazebo</run_depend>
+  <run_depend>robotnik_sensors</run_depend>
+  <run_depend>costmap_prohibition_layer</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

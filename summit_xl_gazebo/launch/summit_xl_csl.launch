@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+
+    <env name="LC_NUMERIC" value="C" />
+    <arg name="launch_rviz" default="true"/>
+    <arg name="world" default="$(find summit_xl_gazebo)/worlds/summit_xl_office.world"/> 
+
+    <!-- startup simulated world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="gui" value="true"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+
+    <!-- spawn Summit XL Mobile Platform -->
+	<include file="$(find summit_xl_gazebo)/launch/summit_xl_csl_spawn.launch">
+        <!-- Robot Name ID -->
+        <arg name="id_robot" value="summit_xl"/>
+        <!-- Robot Pose -->
+        <arg name="x_init_pose" value="0.0"/>
+        <arg name="y_init_pose" value="0.0"/>
+        <arg name="a_init_pose" value="0.0"/>
+        <!-- Launch Robot Localization Nodes -->
+        <arg name="launch_robot_localization" value="true"/>
+        <arg name="launch_mapserver" value="true"/>
+        <arg name="launch_amcl" value="true"/>
+        <!-- Define The map file  -->
+        <arg name="map_file" value="$(find summit_xl_localization)/maps/willow_garage/willow_garage.yaml"/>
+        <!-- Launch Robot Navigation Nodes -->
+        <arg name="launch_move_base" value="true"/>
+        <!-- Slam -->
+        <arg name="launch_gmapping" value="false"/>
+        <arg name="robot_localization_mode" value="odom"/><!-- odom, complete (including gps)-->
+        <!-- set ros_planar_move_plugin true for omnidirectional -->
+        <arg name="ros_planar_move_plugin" value="true"/>
+        <arg name="use_kinect" value="true"/>
+	</include>
+	
+	<!-- launch rviz -->
+	<node if="$(arg launch_rviz)" name="rviz" pkg="rviz" type="rviz" required="true" args="-d  $(find summit_xl_gazebo)/rviz/ntua.rviz"/>
+
+
+</launch>

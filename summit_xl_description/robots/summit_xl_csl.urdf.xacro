@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<robot name="summit_xl" xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+
+<!--- 
+Robot Description of the Summit XL HL Mobile Platform
+equipped with KinectV2, IMU and Laser sensor.
+
+Source Code: 
+https://github.com/RobotnikAutomation/summit_xl_common.git
+
+Modified By:
+Team of Control System Lab,
+National Technical University of Athens
+-->
+
+
+	<!-- ***************** -->
+	<!-- Imported elements -->
+	<!-- ***************** -->
+	
+	<!-- First we import all posible elements defined in the urdf.xacro files. All these elements are defined as macro:xacros -->
+
+	<!-- Import summit XL base elements -->
+	<xacro:include filename="$(find summit_xl_description)/urdf/bases/summit_xl_base.urdf.xacro" />
+  
+	<!-- Import summit XL rubber wheels -->
+	<xacro:include filename="$(find summit_xl_description)/urdf/wheels/rubber_wheel.urdf.xacro" />
+	
+	<!-- Import summit XL mecanum wheels -->
+	<xacro:include filename="$(find summit_xl_description)/urdf/wheels/omni_wheel.urdf.xacro" />
+    
+	<!-- Import all available sensors -->
+	<!--xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" /-->
+	
+	<!-- GPS -->
+    <xacro:include filename="$(find robotnik_sensors)/urdf/gps.urdf.xacro" /> 
+	<!-- KinectV2 -->
+    <xacro:include filename="$(find robotnik_sensors)/urdf/kinectv2.urdf.xacro" />
+    <!-- Imu hector -->
+    <xacro:include filename="$(find robotnik_sensors)/urdf/imu_hector_plugin.urdf.xacro" />  
+    <!-- Hokuyo ust10lx -->
+    <xacro:include filename="$(find robotnik_sensors)/urdf/hokuyo_ust10lx.urdf.xacro" />  
+  
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	  
+	<!-- Wheel parameters -->
+	<xacro:property name="wheel_offset_x" value="0.229" />    <!-- x,y,z in translation from base_link to the center of the wheel -->
+	<xacro:property name="wheel_offset_y" value="0.234" />    
+	<xacro:property name="wheel_offset_z" value="0.0" />
+
+	<!-- Flag to select the high or low quality model -->
+	<xacro:property name="hq" value="true" />
+
+	<xacro:arg name="prefix" default="summit_xl_"/>
+	<xacro:arg name="ros_planar_move_plugin" default="false"/>
+	<xacro:arg name="kinect" default="true"/>
+
+		
+    <xacro:macro name="summit_xl" params="prefix publish_bf hq">
+
+		<!-- *************** -->
+		<!-- Robots Elements -->
+		<!-- *************** -->
+
+		<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
+		
+		
+		<!-- Summit XL base -->
+		<xacro:summit_xl_base prefix="$(arg prefix)" publish_bf="true" hq="${hq}" />
+		
+		
+		<!-- Model With KinectV2 Sensor -->
+		<xacro:if value="$(arg kinect)">
+
+		       <!-- Aluminium Channel 1 -->
+              <link name="$(arg prefix)alluminium_channel_link">
+                <visual>
+                  <origin rpy="0.0 0.0 0.0" xyz="0 0 0.0"/>
+                  <geometry>
+                    <mesh filename="package://summit_description/meshes/aluminium_channel/model.stl" scale="0.02 0.02 0.02"/>
+                  </geometry>
+                  <material name="">
+                    <color rgba="0.34 0.35 0.36 1.0"/>
+                  </material>
+                </visual>
+                <collision>
+                  <origin rpy="0.0 0 0.0" xyz="0 0 0"/>
+                  <geometry>
+                    <mesh filename="package://summit_description/meshes/aluminium_channel/model.stl" scale="0.02 0.02 0.02"/>
+                  </geometry>
+                </collision>
+                <inertial>
+                  <origin rpy="0.0 0.0 0.0" xyz="0 0 0"/>
+                  <mass value="1"/>
+                  <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+                </inertial>
+              </link>
+
+              <joint name="$(arg prefix)connect_alchannel1_and_summit" type="fixed">
+                <child link="$(arg prefix)alluminium_channel_link" />
+                <parent link="$(arg prefix)base_link" />
+                <origin xyz="-0.3 -0.05 0.27" rpy="${180.0*PI/180} ${-90.0*PI/180} ${0.0*PI/180}" />    
+              </joint> 
+
+              <!-- Aluminium Channel 2 -->
+              <link name="$(arg prefix)alluminium_channel_link2">
+                <visual>
+                  <origin rpy="0.0 0.0 0.0" xyz="0 0 0.0"/>
+                  <geometry>
+                    <mesh filename="package://summit_description/meshes/aluminium_channel/model.stl" scale="0.02 0.02 0.02"/>
+                  </geometry>
+                  <material name="">
+                    <color rgba="0.34 0.35 0.36 1.0"/>
+                  </material>
+                </visual>
+                <collision>
+                  <origin rpy="0.0 0 0.0" xyz="0 0 0"/>
+                  <geometry>
+                    <mesh filename="package://summit_description/meshes/aluminium_channel/model.stl" scale="0.02 0.02 0.02"/>
+                  </geometry>
+                </collision>
+                <inertial>
+                  <origin rpy="0.0 0.0 0.0" xyz="0 0 0"/>
+                  <mass value="1"/>
+                  <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+                </inertial>
+              </link>
+
+              <joint name="$(arg prefix)connect_alchannel2_and_summit" type="fixed">
+                <child link="$(arg prefix)alluminium_channel_link2" />
+                <parent link="$(arg prefix)base_link" />
+                <origin xyz="-0.3 0.06 0.27" rpy="${180.0*PI/180} ${-90.0*PI/180} ${0.0*PI/180}" />    
+              </joint> 
+              
+              <!-- Add Sensor -->
+              <xacro:sensor_kinectv2 prefix="$(arg prefix)kinect2" parent="$(arg prefix)base_link">
+                    <origin xyz="-0.26 -0.03 0.58" rpy="0 ${7.0*PI/180} 0"/> 
+              </xacro:sensor_kinectv2>
+
+		</xacro:if>
+		
+		
+		<!-- If not planar robot with rubber_wheels -->
+		<xacro:unless value="$(arg ros_planar_move_plugin)">
+		        <xacro:rubber_wheel prefix="$(arg prefix)front_right" parent="$(arg prefix)base_link" reflect="false" hq="${hq}">
+		            <origin xyz="${wheel_offset_x} -${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:rubber_wheel>
+	          
+		        <xacro:rubber_wheel prefix="$(arg prefix)front_left" parent="$(arg prefix)base_link" reflect="true" hq="${hq}">
+		            <origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:rubber_wheel>
+	          
+		        <xacro:rubber_wheel prefix="$(arg prefix)back_left" parent="$(arg prefix)base_link" reflect="true" hq="${hq}">
+		            <origin xyz="-${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:rubber_wheel>
+	          
+		        <xacro:rubber_wheel prefix="$(arg prefix)back_right" parent="$(arg prefix)base_link" reflect="false" hq="${hq}">
+		            <origin xyz="-${wheel_offset_x} -${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:rubber_wheel>
+		</xacro:unless>
+		
+		
+		<!-- If planar, robot with mecanum_wheels -->
+		<xacro:if value="$(arg ros_planar_move_plugin)">
+		        <xacro:omni_wheel prefix="$(arg prefix)front_right" parent="$(arg prefix)base_link" reflect="false" hq="${hq}">
+		            <origin xyz="${wheel_offset_x} -${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:omni_wheel>
+	          
+		        <xacro:omni_wheel prefix="$(arg prefix)front_left" parent="$(arg prefix)base_link" reflect="true" hq="${hq}">
+		            <origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:omni_wheel>
+	          
+		        <xacro:omni_wheel prefix="$(arg prefix)back_left" parent="$(arg prefix)base_link" reflect="true" hq="${hq}">
+		            <origin xyz="-${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:omni_wheel>
+	          
+		        <xacro:omni_wheel prefix="$(arg prefix)back_right" parent="$(arg prefix)base_link" reflect="false" hq="${hq}">
+		            <origin xyz="-${wheel_offset_x} -${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+		        </xacro:omni_wheel>
+		</xacro:if>
+		
+		
+		
+		
+		
+		
+        <!-- IMU -->
+		<xacro:sensor_imu_hector prefix="$(arg prefix)imu" parent="$(arg prefix)base_link">
+			<origin xyz="-0.18 0.0 0.170" rpy="0 0 0"/>
+		</xacro:sensor_imu_hector>
+		<!-- 2d laser -->
+		<xacro:sensor_hokuyo_ust10lx prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link" prefix_topic="front_laser" min_angle="-1.7" max_angle="1.7">
+			<origin xyz="0.345 0.0 0.17" rpy="0 0 0"/>
+		</xacro:sensor_hokuyo_ust10lx>
+		<xacro:sensor_hokuyo_ust10lx prefix="$(arg prefix)rear_laser" parent="$(arg prefix)base_link" prefix_topic="rear_laser" min_angle="-1.7" max_angle="1.7">
+			<origin xyz="-0.345 0.0 0.17" rpy="0 0 ${180.0*PI/180}"/>
+		</xacro:sensor_hokuyo_ust10lx>
+
+
+		
+   </xacro:macro>
+   
+   <!-- Gazebo ros control pluggins -->
+   <xacro:ros_control/>
+   
+   <xacro:if value="$(arg ros_planar_move_plugin)">
+	   <xacro:omni_steering prefix="$(arg prefix)" publish_tf="false"/>
+   </xacro:if>
+   
+   <xacro:summit_xl prefix="$(arg prefix)" publish_bf="true" hq="true"/>
+
+	
+</robot>
+
