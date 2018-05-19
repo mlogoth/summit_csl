@@ -3,11 +3,12 @@ summit_csl
 
 Packages for the simulation of the Summit XL HL modified by the team of Control System Lab, National Technical University of Athens.
 
-![alt text](https://github.com/mlogoth/summit_csl/summit_csl.png)
+![alt text](https://github.com/mlogoth/summit_csl/blob/master/summit_csl.png)
 
 Tested on Ubuntu 14.04 LTS with ROS Indigo and Gazebo 2.2.3.
 
 <h1> Dependencies </h1>
+
 - robotnik_msgs [link](https://github.com/RobotnikAutomation/robotnik_msgs)
 - move_base 
 - amcl
@@ -68,6 +69,7 @@ This file includes:
 
 ```
 The above launch file:
+ 
  - starts the willow_garage Gazebo world
  - spawns the summit xl robot model
  - starts the robot controllers
