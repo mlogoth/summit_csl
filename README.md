@@ -3,7 +3,7 @@ summit_csl
 
 Packages for the simulation of the Summit XL HL modified by the team of Control System Lab, National Technical University of Athens.
 
-![alt text](https:////github.com/mlogoth/summit_csl/summit_csl.png)
+![alt text](https://github.com/mlogoth/summit_csl/summit_csl.png)
 
 Tested on Ubuntu 14.04 LTS with ROS Indigo and Gazebo 2.2.3.
 
