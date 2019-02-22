@@ -74,7 +74,7 @@ def vels(speed,turn):
 if __name__=="__main__":
     	settings = termios.tcgetattr(sys.stdin)
 	
-	pub = rospy.Publisher('/summit_xl/cmd_vel', Twist, queue_size = 1)
+	pub = rospy.Publisher('/summit_xl/pad_teleop/cmd_vel', Twist, queue_size = 1)
 	rospy.init_node('teleop_twist_keyboard')
 
 	speed = rospy.get_param("~speed", 0.5)
