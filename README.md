@@ -9,10 +9,14 @@ Tested on Ubuntu 14.04 LTS with ROS Indigo and Gazebo 2.2.3.
 
 <h1> Dependencies </h1>
 
-- robotnik_msgs [link](https://github.com/RobotnikAutomation/robotnik_msgs)
-- move_base 
-- amcl
-- gmapping
+- [move_base](http://wiki.ros.org/move_base)
+- [amcl](http://wiki.ros.org/amcl)
+- [gmapping](http://wiki.ros.org/gmapping)
+- [robot_localization](http://wiki.ros.org/robot_localization)
+- [mavros](http://wiki.ros.org/mavros)
+- [costmap_prohibition_layer](http://wiki.ros.org/costmap_prohibition_layer)
+- [robotnik_msgs](https://github.com/RobotnikAutomation/robotnik_msgs)
+- [robotnik_sensors](http://wiki.ros.org/robotnik_sensors)
 
 <h1> Packages </h1>
 
@@ -78,7 +82,7 @@ The above launch file:
  - starts the move_base navigation package
  - launches rviz
  
-If you want to use the Summit XL HL with Rubber wheels: 
+If you like to use the Summit XL HL with Rubber wheels (non-holonomic platform): 
 ```XML 
 <arg name="ros_planar_move_plugin" value="false"/> 
 ```
